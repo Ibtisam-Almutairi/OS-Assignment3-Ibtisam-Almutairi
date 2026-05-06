@@ -106,7 +106,15 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - 4-6 sentences with code examples]
+[First race condition – contextSwitchCount++ (and other counters)
+The shared resources here are the integer counters.
+The issue is that the ++ operation is not atomic, meaning multiple threads can read the same value at the same time, increment it, and then write it back. This leads to a lost update problem.
+As a result, the final value of the counter may be lower than the actual number of increments that occurred.
+
+Second race condition – executionLog.add(message)
+The shared resource is the ArrayList<String>.
+The problem is that ArrayList is not thread-safe, so if multiple threads call add() simultaneously, it can cause data corruption, missing log entries, or even ConcurrentModificationException.
+This means some log messages might not be recorded correctly or the program may behave unpredictably.]
 
 ---
 
@@ -115,7 +123,9 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - explain your implementation choices]
+[A ReentrantLock is a mutual exclusion lock that allows only one thread to access a critical section at a time. I used it to protect the counters and the execution log because these shared resources require exclusive access to avoid inconsistency.
+
+A Semaphore, on the other hand, controls access using permits. It can allow multiple threads depending on the number of permits available. In my case, I used a Semaphore(1) to restrict execution so that only one process runs at a time, similar to how a single-core CPU works.]
 
 ---
 
@@ -124,7 +134,14 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - reference try-finally blocks, lock ordering, etc.]
+[A deadlock happens when threads are stuck waiting for each other’s locked resources indefinitely, causing the system to freeze.
+To prevent this, I applied the following techniques:
+
+1- Lock ordering: I avoided acquiring multiple locks at the same time, which prevents circular waiting between threads.
+
+2-try-finally blocks: Every lock() or acquire() is always followed by a finally block to ensure the lock is released even if an exception occurs.
+
+In addition, the semaphore is acquired at the start of the critical section and released immediately after, ensuring there is no nested locking or risk of deadlock.]
 
 ---
 
@@ -137,7 +154,14 @@ Document your development process with **minimum 3 entries** showing progression
 
 **Your Answer**:
 
-[Your answer here - explain coarse-grained vs fine-grained locking, independence of counters, concurrency implications. Show understanding of when to use each approach. 5-8 sentences expected.]
+[I chose a fine-grained locking approach by using three separate ReentrantLocks, each one protecting a different counter (contextSwitchCount, completedProcessCount, and waitingTimeCount).
+
+Reason: These counters are completely independent, so updating one does not interfere with the others. If a single coarse-grained lock was used, all threads would be forced to wait even when accessing different counters, which would reduce performance unnecessarily.
+With fine-grained locking, different threads can update different counters at the same time, improving parallelism and overall efficiency.
+
+Trade-off: It adds a bit more complexity in implementation and requires careful handling, but since the resources are independent, the performance benefit is more important.
+
+Overall, fine-grained locking provides better concurrency because it avoids unnecessary blocking between unrelated operations.]
 
 ---
 
