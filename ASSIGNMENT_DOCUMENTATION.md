@@ -31,55 +31,55 @@
 
 Document your development process with **minimum 3 entries** showing progression:
 
-### Entry 1 - [Date, Time]
-**What I implemented**: 
+### Entry 1 - [2026/5/5, 11:12 PM]
+**What I implemented**: Forked the repo, changed student ID to 445052075. 
 
-**Challenges encountered**: 
+**Challenges encountered**: No challenges, pretty straightforward.
 
-**How I solved it**: 
+**How I solved it**: Followed the VS Code cloning steps.
 
-**Testing approach**: 
+**Testing approach**: Ran the original code to see the race conditions – numbers were different every time.
 
-**Time spent**: 
-
----
-
-### Entry 2 - [Date, Time]
-**What I implemented**: 
-
-**Challenges encountered**: 
-
-**How I solved it**: 
-
-**Testing approach**: 
-
-**Time spent**: 
+**Time spent**: 20 min.
 
 ---
 
-### Entry 3 - [Date, Time]
-**What I implemented**: 
+### Entry 2 - [2026/5/5, 11:34 PM]
+**What I implemented**: Added ReentrantLock to protect shared variables (contextSwitchCount, completedProcessCount, totalWaitingTime) and wrapped them using lock/unlock with try-finally.
 
-**Challenges encountered**: 
+**Challenges encountered**: I was a bit confused where exactly to place the locks and how many locks I should use (one lock or multiple locks).
 
-**How I solved it**: 
+**How I solved it**: I followed the hint in the code and used separate locks for each variable to allow better concurrency. Also made sure to use try-finally to avoid deadlock.
 
-**Testing approach**: 
+**Testing approach**: Ran the program multiple times and checked if the counters are now consistent.
 
-**Time spent**: 
+**Time spent**: 45 min.
 
 ---
 
-### Entry 4 - [Date, Time]
-**What I implemented**: 
+### Entry 3 - [2026/5/6, 12:25 AM]
+**What I implemented**: Added ReentrantLock for executionLog (ArrayList) to prevent concurrent modification issues.
 
-**Challenges encountered**: 
+**Challenges encountered**: I wasn’t sure if ArrayList really needs synchronization since it worked before sometimes.
 
-**How I solved it**: 
+**How I solved it**: After reading the assignment, I understood that multiple threads can access it at the same time, so I added a lock to protect add operations.
 
-**Testing approach**: 
+**Testing approach**: Ran the program several times and ensured no errors or inconsistent log sizes appear.
 
-**Time spent**: 
+**Time spent**: 30 min.
+
+---
+
+### Entry 4 - [2026/5/6, 12:55 AM]
+**What I implemented**: Added a binary Semaphore for CPU access control by defining cpuSemaphore = new Semaphore(1) in the shared resources.
+
+**Challenges encountered**: I was initially unsure what value to use for the semaphore and how it controls process execution.
+
+**How I solved it**: I used a binary semaphore (1 permit) as required in the assignment to ensure only one process can access the CPU at a time.
+
+**Testing approach**: Ran the program multiple times and confirmed that only one process executes at a time and results are consistent.
+
+**Time spent**: 45 min.
 
 ---
 
