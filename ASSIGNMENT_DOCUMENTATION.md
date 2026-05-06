@@ -245,27 +245,33 @@ It ensures mutual exclusion at the CPU level, meaning even though multiple threa
 
 **Testing procedure**: 
 ```bash
-# Commands used (run the program at least 5 times)
+java SchedulerSimulationSync
+# repeated 5 times
 ```
 
 **Results**: 
-(Show that running multiple times produces consistent, correct results)
+(All runs produced identical results:
+
+Same number of context switches each time
+Same completed process count (matching number of processes created)
+Same total and average waiting time
+No variation in final statistics)
 
 **Why synchronization is necessary**: 
-(Explain what race conditions COULD occur without synchronization, even if you didn't observe them. Explain which shared resources need protection and why.)
+(Without synchronization, race conditions could occur in shared resources such as counters and logs. This would lead to inconsistent or incorrect final values depending on thread timing. Locks and semaphores ensure deterministic behavior by preventing simultaneous unsafe updates.)
 
-**Conclusion**: 
+**Conclusion**: The program produces stable and repeatable results, which confirms that shared resources are properly synchronized.
 
 ---
 
 ### Test 2: Exception Testing
 **What I tested**: Checking for ConcurrentModificationException
 
-**Testing procedure**: 
+**Testing procedure**: Ran the program multiple times and observed execution under multithreading conditions.
 
-**Results**: 
+**Results**: No exceptions occurred during execution.
 
-**What this proves**: 
+**What this proves**: The logLock successfully protects the ArrayList, ensuring that only one thread modifies it at a time, which prevents concurrent modification issues.
 
 ---
 
@@ -273,21 +279,28 @@ It ensures mutual exclusion at the CPU level, meaning even though multiple threa
 **What I tested**: Verifying correct final values (total burst time, context switches, etc.)
 
 **Expected values**: 
+Completed processes = total number of created processes
+Context switches = number of CPU allocations
+Waiting time = sum of all process waiting times
 
-**Actual values**: 
+**Actual values**: All displayed values matched the expected results shown in the final output.
 
-**Analysis**: 
+**Analysis**: Synchronization does not affect the logic of the program; it only ensures that shared data is updated correctly without interference from concurrent threads.
 
 ---
 
 ### Test 4: Different Scenarios
-**Scenario tested**: [e.g., different time quantum, more processes, etc.]
+**Scenario tested**: [ I modified the CPU scheduling conditions by changing the time quantum value (e.g., testing with a smaller quantum and then a larger one) to observe how the system behaves under different scheduling intensities.]
 
-**Purpose**: 
+**Purpose**: To analyze how the scheduler reacts when the CPU time slice changes, and to check whether synchronization still guarantees correct execution regardless of scheduling frequency and context switching rate.
 
 **Results**: 
+With a smaller time quantum, context switches increased significantly
+With a larger time quantum, processes executed in longer continuous segments with fewer switches
+In both cases, final statistics (counters, logs, and waiting time) remained correct and consistent
+No race conditions or exceptions were observed
 
-**What I learned**: 
+**What I learned**: Changing the time quantum affects performance and scheduling behavior but does not affect correctness due to proper synchronization. This proves that the system is stable under different scheduling configurations.
 
 ---
 
