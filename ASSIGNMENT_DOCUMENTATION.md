@@ -169,53 +169,73 @@ Overall, fine-grained locking provides better concurrency because it avoids unne
 
 ### Critical Section #1: Counter Variables
 
-**Which variables**: 
+**Which variables**: contextSwitchCount, completedProcessCount, totalWaitingTime
 
 **Why they need protection**: 
+These variables are shared between multiple threads, and operations like incrementing or adding are not atomic. Without synchronization, concurrent updates can overwrite each other and lead to incorrect final values.
 
-**Synchronization mechanism used**: 
+**Synchronization mechanism used**: Fine-grained locking using separate ReentrantLock objects for each counter.
 
 **Code snippet**:
 ```java
-// Paste your implementation here
+public static void incrementContextSwitch() {
+    contextSwitchLock.lock();
+    try {
+        contextSwitchCount++;
+    } finally {
+        contextSwitchLock.unlock();
+    }
+}
 ```
 
-**Justification**: 
+**Justification**: Each counter is independent, so using separate locks allows multiple threads to update different counters at the same time, improving concurrency while still ensuring correctness.
 
 ---
 
 ### Critical Section #2: Execution Log
 
-**What resource**: 
+**What resource**: executionLog (ArrayList of strings)
 
-**Why it needs protection**: 
+**Why it needs protection**: ArrayList is not thread-safe, so concurrent add() operations may lead to data corruption, lost entries, or runtime exceptions.
 
-**Synchronization mechanism used**: 
+**Synchronization mechanism used**: ReentrantLock (logLock)
 
 **Code snippet**:
 ```java
-// Paste your implementation here
+public static void logExecution(String message) {
+    logLock.lock();
+    try {
+        executionLog.add(message);
+    } finally {
+        logLock.unlock();
+    }
+}
 ```
 
-**Justification**: 
+**Justification**: Using a lock ensures only one thread can modify the log at a time, preserving data consistency and preventing race conditions.
 
 ---
 
 ### Critical Section #3: CPU Semaphore
 
-**Purpose of semaphore**: 
+**Purpose of semaphore**: To simulate a single-core CPU environment where only one process can execute at a time.
 
-**Number of permits and why**: 
+**Number of permits and why**: 1 permit (binary semaphore), because only one process should access the CPU at any given moment.
 
-**Where implemented**: 
+**Where implemented**: Inside Process.run() and Process.runToCompletion() methods.
 
 **Code snippet**:
 ```java
-// Paste your implementation here
+SharedResources.cpuSemaphore.acquire();
+try {
+    // execution section
+} finally {
+    SharedResources.cpuSemaphore.release();
+}
 ```
 
 **Effect on program behavior**: 
-
+It ensures mutual exclusion at the CPU level, meaning even though multiple threads exist, only one process executes at a time, accurately simulating a uniprocessor scheduling system.
 ---
 
 ## Part 4: Testing and Verification (2 marks)
