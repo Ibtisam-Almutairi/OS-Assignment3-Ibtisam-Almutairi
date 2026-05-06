@@ -308,7 +308,7 @@ No race conditions or exceptions were observed
 
 ### What I learned about synchronization:
 
-[6-8 sentences about key concepts, challenges, insights]
+[Through this assignment, I learned that synchronization is essential in multi-threaded systems to prevent inconsistent and unpredictable behavior. Even simple operations like incrementing a variable can produce incorrect results when multiple threads execute at the same time. I also realized that race conditions are not always obvious because the program may work correctly most of the time before failing under specific timing conditions. Using locks ensures that only one thread can access critical sections at a time, which guarantees correctness. I understood that fine-grained locking improves performance by allowing independent resources to be accessed concurrently. However, it also requires careful design to avoid complexity and mistakes. Semaphores provide another level of control by limiting how many threads can access a resource instead of blocking all of them completely.]
 
 ---
 
@@ -316,15 +316,17 @@ No race conditions or exceptions were observed
 
 Give TWO examples where synchronization is critical:
 
-**Example 1**: 
+**Example 1**: Airline booking systems – When multiple users try to book the same seat at the same time, synchronization ensures that only one booking is confirmed, preventing double booking.
 
-**Example 2**: 
+**Example 2**: Online multiplayer games – Player actions such as updating scores, positions, or shared game state must be synchronized to avoid inconsistencies between different players’ views of the game.
 
 ---
 
 ### How I would explain synchronization to others:
 
-[Explain to someone who just finished Assignment 1 - use simple terms and analogies]
+[I would explain synchronization using an ATM example. If two people try to use the same bank account at the same time, both might read the same balance before it updates and withdraw money, which can cause incorrect results. Synchronization makes sure only one person can access and update the account at a time, so the balance stays correct.
+
+In programming, it works the same way by allowing only one thread to use shared data at a time to avoid mistakes.]
 
 ---
 
