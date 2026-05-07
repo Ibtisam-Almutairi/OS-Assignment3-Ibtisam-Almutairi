@@ -332,31 +332,34 @@ In programming, it works the same way by allowing only one thread to use shared 
 
 ## Part 6: GitHub Repository Information
 
-**Repository URL**: 
+**Repository URL**: https://github.com/Ibtisam-Almutairi/OS-Assignment3-Ibtisam-Almutairi.git
 
 **Number of commits**: 
+18 commits.
 
 **Commit messages**: 
-1. 
-2. 
-3. 
-4. 
+1. Set my student ID: 445052075
+2. Add ReentrantLock
+3. Add a Semaphore
+4. Add Method to increment context
 
 ---
 
 ## Summary
 
 **Total time spent on assignment**: 
+10–12 hours.
 
 **Key takeaways**: 
-1. 
-2. 
-3. 
+1. Using separate locks for independent resources can improve concurrency and reduce unnecessary blocking.
+2. Proper synchronization is essential to prevent race conditions and maintain consistent results in multithreaded programs.
+3. Semaphores are useful for controlling access to limited resources, such as simulating CPU execution.
 
 **Most challenging aspect**: 
+The most difficult part was deciding how to organize the synchronization mechanisms correctly and making sure all shared resources were protected without creating unnecessary complexity.
 
 **What I'm most proud of**: 
-
+I am most proud that the program executes correctly and consistently across multiple runs while avoiding race conditions and synchronization-related exceptions.
 ---
 
 **End of Documentation**
